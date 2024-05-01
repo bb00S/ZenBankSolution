@@ -1,0 +1,6 @@
+@ZenCoreService_HostAddress = http://localhost:5133
+
+GET {{ZenCoreService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
