@@ -1,23 +1,36 @@
 ﻿using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
+using ZenReportingService.Models;
 
 namespace ZenReportingService.Services
 {
     public class EmailService : IEmailService
     {
-        public async Task SendEmailAsync(string toEmail, string subject, string body, Attachment attachment)
+        private readonly SmtpClient _smtpClient;
+
+        public EmailService(IConfiguration configuration)
         {
-            var smtpClient = new SmtpClient("your-smtp-server.com", 587)
+            _smtpClient = new SmtpClient
             {
-                Credentials = new NetworkCredential("your-email@example.com", "your-password"),
-                EnableSsl = true
+                Host = configuration["SmtpSettings:SmtpServer"],
+                Port = Convert.ToInt32(configuration["SmtpSettings:Port"]),
+                Credentials = new NetworkCredential(configuration["SmtpSettings:Username"], configuration["SmtpSettings:Password"]),
+                EnableSsl = true 
+            };
+        }
+        public async Task SendEmailAsync(string toEmail, byte[] pdfAttachment)
+        {
+            var mailMessage = new MailMessage("sender@example.com", toEmail)
+            {
+                Subject = "Daily Report",
+                Body = "Please find attached the daily report in PDF format."
             };
 
-            var mailMessage = new MailMessage("your-email@example.com", toEmail, subject, body);
-            mailMessage.Attachments.Add(attachment);
+            mailMessage.Attachments.Add(new Attachment(new MemoryStream(pdfAttachment), "DailyReport.pdf", "application/pdf"));
 
-            await smtpClient.SendMailAsync(mailMessage);
+            await _smtpClient.SendMailAsync(mailMessage);
         }
     }
 }

@@ -2,5 +2,5 @@
 
 public interface IEmailService
 {
-    Task SendEmailAsync(string toEmail, string subject, string body, Attachment attachment);
+    Task SendEmailAsync(string toEmail, byte[] pdfAttachment);
 }

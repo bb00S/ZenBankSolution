@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ZenReportingService.Data;
 using ZenReportingService.Services;
+using Microsoft.OpenApi.Models;
 
 
 namespace ZenReportingService
@@ -25,6 +26,16 @@ namespace ZenReportingService
 
             services.AddScoped<IEmailService, EmailService>();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ZenReportingService API", Version = "v1" });
+            });
+
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,6 +53,14 @@ namespace ZenReportingService
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZenReportingService API V1");
+                c.RoutePrefix = "swagger";
+            });
+            
         }
     }
 }
