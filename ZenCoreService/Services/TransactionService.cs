@@ -15,10 +15,23 @@ namespace ZenCoreService.Services.TransactionServices
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Transaction> GetAllTransactions()
+        public IEnumerable<ZenTransaction> GetAllTransactions()
         {
             return _dbContext.Transactions.ToList();
         }
 
+        public ZenTransaction GetTransactionById(int ID) 
+        {
+            return _dbContext.Transactions.FirstOrDefault(t => t.ID == ID);
+        }
+
+
+        public ZenTransaction CreateTransaction(ZenTransaction transaction)
+        {
+            
+            _dbContext.Transactions.Add(transaction);
+            _dbContext.SaveChanges();
+            return transaction;
+        }
     }
 }

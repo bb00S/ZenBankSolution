@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenCoreService", "ZenCoreService\ZenCoreService.csproj", "{0380F28D-5366-4629-A18E-DB16575E0DEE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{82262A7E-E0F5-46D1-8A6D-A86B7EA93609} = {82262A7E-E0F5-46D1-8A6D-A86B7EA93609}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenReportingService", "ZenReportingService\ZenReportingService.csproj", "{82262A7E-E0F5-46D1-8A6D-A86B7EA93609}"
 EndProject

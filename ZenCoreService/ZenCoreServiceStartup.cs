@@ -9,6 +9,11 @@ using ZenCoreService.Services;
 using ZenCoreService.Services.TransactionServices;
 using ZenCoreService.Services.Interfaces;
 using ZenCoreService.Interfaces;
+using Microsoft.OpenApi.Models;
+using ZenCoreService.Filters;
+using ZenCoreService.Models;
+
+
 
 namespace ZenCoreService
 {
@@ -28,9 +33,26 @@ namespace ZenCoreService
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<ITransactionService, TransactionService>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<IUserService, UserService>();
 
+            /* services.AddSwaggerGen(c =>
+             {
+                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ZenCoreService API", Version = "v1" });
+                 c.SchemaFilter<CustomSchemaFilter>();
+                 //c.SchemaGeneratorOptions.SchemaIdSelector = type => type == typeof(Transaction) ? "Transaction" : null;
+             });*/
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ZenCoreService API", Version = "v1" });
+                c.SchemaFilter<CustomSchemaFilter>();
+            });
+
+            services.AddLogging(builder =>
+            {
+                builder.AddDebug();
+                builder.AddConsole();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -44,13 +66,17 @@ namespace ZenCoreService
 
             app.UseAuthorization();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZenCoreService API V1");
+                c.RoutePrefix = "swagger";
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
         }
-
-
     }
 }
-

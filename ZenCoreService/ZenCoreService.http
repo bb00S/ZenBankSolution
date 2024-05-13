@@ -1,6 +1,6 @@
 @ZenCoreService_HostAddress = http://localhost:5133
 
-GET {{ZenCoreService_HostAddress}}/weatherforecast/
+GET {{ZenCoreService_HostAddress}}/api/transactions
 Accept: application/json
 
 ###

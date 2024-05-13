@@ -5,6 +5,8 @@ namespace ZenCoreService.Interfaces
 {
     public interface ITransactionService
     {
-        IEnumerable<Transaction> GetAllTransactions();
+        IEnumerable<ZenTransaction> GetAllTransactions();
+        ZenTransaction GetTransactionById(int ID);
+        ZenTransaction CreateTransaction(ZenTransaction transaction);
     }
 }

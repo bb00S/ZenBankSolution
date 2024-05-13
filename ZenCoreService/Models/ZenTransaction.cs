@@ -1,6 +1,9 @@
-﻿namespace ZenCoreService.Models
+﻿using Swashbuckle.AspNetCore.Annotations;
+
+namespace ZenCoreService.Models
 {
-    public class Transaction
+    [SwaggerSchema("ZenCoreServiceTransaction")]
+    public class ZenTransaction
     {
         public int ID { get; set; }
         public int UserID { get; set; }
